@@ -7,6 +7,7 @@
 #include <ostream>
 #include <string>
 #include <memory>
+#include <iostream>
 
 namespace datastructures{
     struct SmartTree{

@@ -82,11 +82,14 @@ namespace datastructures{
     std::unique_ptr <SmartTree> RestoreLeft(const std::string &tree, int closed_brackets_counter, int open_brackets_counter){
         std::unique_ptr <SmartTree> root;
         int i=0;
+        int k;
         int value_int;
+        bool is=true;
         std::string value_str="";
         std::string leftsubstree;
         std::string rightsubtree;
-        while(true){
+        while(is){
+            k= tree[i];
             if(tree[i]=='[' && (i+1<tree.size() && tree[i+1]!='n')){
                 open_brackets_counter++;
             }
@@ -97,12 +100,13 @@ namespace datastructures{
                 root=nullptr;
                 break;
             }
-            if(47<tree[i]<58){
-                value_str=value_str+tree[i];
+            if(47<k && k<58){
+                value_str=value_str+std::to_string(k-48);
             }
-            if(tree[i]==' '){
+            if(tree[i]==' '&& value_str!=""){
                 value_int=std::stoi(value_str);
                 root = CreateLeaf(value_int);
+                std::cout<<"RestoreLeft: valint "<<value_int<<" valstr"<<value_str;
                 value_str="";
                 for(int j=i; j<tree.size()-1; j++){
                     if(tree[j]=='[' && (j+1<tree.size() && tree[j+1]=='n')){
@@ -111,11 +115,18 @@ namespace datastructures{
                     if(tree[j]==']' &&(j-1>0 && tree[j-1]=='e')){
                         closed_brackets_counter++;
                     }
-                    if(open_brackets_counter-1==closed_brackets_counter){
+                    if(open_brackets_counter==closed_brackets_counter){
                         leftsubstree=tree.substr(i, j);
                         rightsubtree=tree.substr(j, tree.size()-1-j);
+
+                        std::cout<<"leftsubtree: "<<leftsubstree<<std::endl;
+                        std::cout<<"rightsub: "<<rightsubtree<<std::endl;
                         root = InsertLeftChild(move(root), RestoreLeft(leftsubstree,closed_brackets_counter, open_brackets_counter));
                         root = InsertRightChild(move(root), RestoreRight(rightsubtree, closed_brackets_counter, open_brackets_counter));
+                        break;
+                    }
+                    if(tree[j]=='[' && (j+1<tree.size() && tree[j+1]=='n')){
+                        is=false;
                         break;
                     }
                 }
@@ -124,14 +135,18 @@ namespace datastructures{
         }
         return root;
     }
+
     std::unique_ptr <SmartTree> RestoreRight(const std::string &tree, int closed_brackets_counter, int open_brackets_counter){
         std::unique_ptr <SmartTree> root;
         int i=0;
+        int k;
         int value_int;
+        bool is=true;
         std::string value_str="";
         std::string leftsubstree;
         std::string rightsubtree;
-        while(true){
+        while(is){
+            k= tree[i];
             if(tree[i]=='[' && (i+1<tree.size() && tree[i+1]!='n')){
                 open_brackets_counter++;
             }
@@ -142,12 +157,14 @@ namespace datastructures{
                 root=nullptr;
                 break;
             }
-            if(47<tree[i]<58){
-                value_str=value_str+tree[i];
+            if(47<k && k<58){
+                value_str=value_str+std::to_string(k-48);
+
             }
-            if(tree[i]==' '){
+            if(tree[i]==' ' && value_str!=""){
                 value_int=std::stoi(value_str);
                 root = CreateLeaf(value_int);
+                std::cout<<"RestoreLeft: valint "<<value_int<<" valstr"<<value_str;
                 value_str="";
                 for(int j=i; j<tree.size()-1; j++){
                     if(tree[j]=='[' && (j+1<tree.size() && tree[j+1]=='n')){
@@ -156,11 +173,17 @@ namespace datastructures{
                     if(tree[j]==']' &&(j-1>0 && tree[j-1]=='e')){
                         closed_brackets_counter++;
                     }
-                    if(open_brackets_counter-1==closed_brackets_counter){
+                    if(open_brackets_counter==closed_brackets_counter){
                         leftsubstree=tree.substr(i, j);
                         rightsubtree=tree.substr(j, tree.size()-1-j);
+                        std::cout<<"leftsubtree: "<<leftsubstree<<std::endl;
+                        std::cout<<"rightsub: "<<rightsubtree<<std::endl;
                         root = InsertLeftChild(move(root), RestoreLeft(leftsubstree,closed_brackets_counter, open_brackets_counter));
                         root = InsertRightChild(move(root), RestoreRight(rightsubtree, closed_brackets_counter, open_brackets_counter));
+                        break;
+                    }
+                    if(tree[j]=='[' && (j+1<tree.size() && tree[j+1]=='n')){
+                        is=false;
                         break;
                     }
                 }
@@ -183,11 +206,15 @@ namespace datastructures{
         int char_to_int;
         int value_int;
         int i=0;
+        int k;
+        bool is=true;
         int bracket_position;
         std::string leftsubstree;
         std::string rightsubtree;
 
-        while(true){
+        while(is){
+            k= tree[i];
+            //std::cout<<k<<std::endl;
             if(tree[i]=='[' && (i+1<tree.size() && tree[i+1]!='n')){
                 open_brackets_counter++;
             }
@@ -198,11 +225,14 @@ namespace datastructures{
                 root=nullptr;
                 break;
             }
-            if(47<tree[i]<58){
-                value_str=value_str+tree[i];
+            if(47<k && k<58){
+                value_str=value_str+std::to_string(k-48);
+
             }
-            if(tree[i]==' '){
+            if(tree[i]==' ' && value_str!=""){
+                std::cout<<"1value_str: "<<value_str<<" value int: "<<value_int<<std::endl;
                 value_int=std::stoi(value_str);
+                std::cout<<"value_str: "<<value_str<<" value int: "<<value_int<<std::endl;
                 root = CreateLeaf(value_int);
                 value_str="";
                 for(int j=i; j<tree.size()-1; j++){
@@ -212,17 +242,25 @@ namespace datastructures{
                     if(tree[j]==']' &&(j-1>0 && tree[j-1]=='e')){
                         closed_brackets_counter++;
                     }
-                    if(open_brackets_counter-1==closed_brackets_counter){
+                    if(open_brackets_counter==closed_brackets_counter){
                         leftsubstree=tree.substr(i, j);
                         rightsubtree=tree.substr(j, tree.size()-1-j);
+
+                        std::cout<<"leftsubtree: "<<leftsubstree<<std::endl;
+                        std::cout<<"rightsub: "<<rightsubtree<<std::endl;
                         root = InsertLeftChild(move(root), RestoreLeft(leftsubstree,closed_brackets_counter, open_brackets_counter));
                         root = InsertRightChild(move(root), RestoreRight(rightsubtree, closed_brackets_counter, open_brackets_counter));
+                        break;
+                    }
+                    if(tree[j]=='[' && (j+1<tree.size() && tree[j+1]=='n')){
+                        is=false;
                         break;
                     }
                 }
             }
             i++;
         }
+        return root;
 
 /*
 
