@@ -12,3 +12,4 @@ using namespace std;
 string reverse (string str);
 
 #endif //JIMP_EXERCISES_REVERSESTRING_H
+//
